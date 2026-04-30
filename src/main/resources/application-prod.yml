@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20   # depende da carga
+      minimum-idle: 5
+      connection-timeout: 10000
+      idle-timeout: 300000
+      max-lifetime: 1800000
+
+  devtools:
+    restart:
+      enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+
+logging:
+  level:
+    root: WARN
+    com.portfolio.gerenciamento: INFO
+    org.springframework.web: WARN
+    org.hibernate.SQL: WARN
+  file:
+    name: logs/application.log
+  logback:
+    rolling-policy:
+      max-file-size: 10MB
+      max-history: 30
