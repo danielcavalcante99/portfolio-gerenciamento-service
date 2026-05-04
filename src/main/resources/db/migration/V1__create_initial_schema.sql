@@ -1,9 +1,16 @@
+CREATE TYPE atribuicao_membro AS ENUM (
+    'FUNCIONARIO',
+    'GERENTE',
+    'DIRETOR',
+    'TERCEIRIZADO'
+);
+
 CREATE TABLE membros
 (
     id            BIGSERIAL PRIMARY KEY,
-    nome          VARCHAR(150) NOT NULL,
-    cargo         VARCHAR(80)  NOT NULL,
-    criado_em     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nome          VARCHAR(150)      NOT NULL,
+    atribuicao    atribuicao_membro NOT NULL,
+    criado_em     TIMESTAMP         NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP
 );
 
