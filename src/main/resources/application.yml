@@ -17,8 +17,8 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
-        generate_statistics: true
+        format_sql: false
+        generate_statistics: false
 
   flyway:
     enabled: true
@@ -30,3 +30,13 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
+
+portfolio:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+
+  projeto:
+    max-membros: ${MAX_MEMBROS_PROJETO:10}
+    max-alocacoes-ativas: ${MAX_ALOCACOES_ATIVAS:3}
+    limite-orcamento-baixo: ${LIMITE_ORCAMENTO_BAIXO:100000.00}
+    limite-orcamento-alto: ${LIMITE_ORCAMENTO_ALTO:500000.00}
