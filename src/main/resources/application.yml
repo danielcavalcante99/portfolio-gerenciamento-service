@@ -1,6 +1,6 @@
 spring:
   application:
-    name: management
+    name: portfolio-gerenciamento-service
 
   profiles:
     default: ${ACTIVE_PROFILE:dev}

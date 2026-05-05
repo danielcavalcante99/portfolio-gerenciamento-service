@@ -1,19 +1,13 @@
 package com.portfolio.gerenciamento.integrations;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portfolio.gerenciamento.enums.ProjetoStatus;
-import com.portfolio.gerenciamento.repositories.MembroRepository;
-import com.portfolio.gerenciamento.repositories.ProjetoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -26,20 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PortfolioApiIntegrationTest extends BaseIntegrationTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private ProjetoRepository projetoRepository;
-
-    @Autowired
-    private MembroRepository membroRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Test
     @DisplayName("Deve buscar membro por id quando membro existir")
