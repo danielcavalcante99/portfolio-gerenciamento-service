@@ -29,11 +29,12 @@ As versoes principais estao declaradas no `pom.xml` ou gerenciadas pelo BOM do S
 | Spring Data JPA | gerenciado pelo Spring Boot | Repositories e Specifications |
 | Spring Security | gerenciado pelo Spring Boot | Basic Auth stateless |
 | PostgreSQL JDBC | gerenciado pelo Spring Boot | Driver do banco |
-| PostgreSQL | 16-alpine | Banco local e banco dos testes de integracao |
+| PostgreSQL | 16-alpine | Banco local via Docker Compose e banco dos testes de integracao |
 | Flyway | gerenciado pelo Spring Boot | Migracao do schema |
 | MapStruct | 1.5.5.Final | Conversao entre DTOs e entidades |
 | Lombok | 1.18.38 | Reducao de boilerplate |
 | Testcontainers | 1.21.4 | PostgreSQL real nos testes de integracao |
+| Spring Boot Docker Compose | gerenciado pelo Spring Boot | Inicializacao automatica dos servicos locais definidos em `docker-compose.yml` |
 | Springdoc OpenAPI | 3.0.2 | Swagger UI e OpenAPI |
 | Micrometer Prometheus | 1.16.4 | Metricas Prometheus via actuator |
 | JaCoCo | 0.8.13 | Relatorio e gate de cobertura |
@@ -269,7 +270,7 @@ erDiagram
 Pre-requisitos:
 
 - Java 21
-- Docker e Docker Compose
+- Docker e Docker Compose em execucao
 - Maven Wrapper incluido no repositorio
 
 Verificar Maven Wrapper:
@@ -284,29 +285,6 @@ No Windows:
 .\mvnw.cmd -version
 ```
 
-Subir PostgreSQL e pgAdmin:
-
-```bash
-docker compose up -d
-```
-
-Servicos locais:
-
-- PostgreSQL: `localhost:5432`
-- pgAdmin: `http://localhost:5050`
-
-Parar:
-
-```bash
-docker compose down
-```
-
-Parar e remover volume:
-
-```bash
-docker compose down -v
-```
-
 Rodar aplicacao:
 
 ```bash
@@ -319,12 +297,43 @@ No Windows:
 .\mvnw.cmd spring-boot:run
 ```
 
-URLs:
+Com a dependencia `spring-boot-docker-compose`, o Spring Boot detecta o arquivo `docker-compose.yml` e inicializa automaticamente os servicos locais durante o start da aplicacao. Portanto, para o fluxo padrao de desenvolvimento, nao e necessario executar `docker compose up -d` antes de iniciar a API.
+
+Servicos inicializados pelo Docker Compose:
+
+- PostgreSQL: `localhost:5432`
+- pgAdmin: `http://localhost:5050`
+
+URLs da aplicacao:
 
 - API: `http://localhost:8080`
 - Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
 - Health: `http://localhost:8080/actuator/health`
+
+### Gerenciamento manual do Docker Compose
+
+O gerenciamento manual continua disponivel para cenarios em que voce queira subir ou parar os servicos sem iniciar a aplicacao.
+
+Subir PostgreSQL e pgAdmin manualmente:
+
+```bash
+docker compose up -d
+```
+
+Parar servicos:
+
+```bash
+docker compose down
+```
+
+Parar servicos e remover volume:
+
+```bash
+docker compose down -v
+```
+
+Se precisar iniciar a aplicacao sem que o Spring Boot gerencie o Compose, desabilite o suporte com `SPRING_DOCKER_COMPOSE_ENABLED=false`.
 
 ## Testes
 
@@ -346,6 +355,7 @@ No Windows:
 
 Observacoes:
 
+- O profile `test` define `spring.docker.compose.enabled=false`, pois os testes de integracao usam Testcontainers para provisionar o PostgreSQL isolado da aplicacao local.
 - `BaseIntegrationTest` usa `@Testcontainers(disabledWithoutDocker = true)`.
 - Se Docker nao estiver disponivel, os testes de integracao sao ignorados.
 - Em ambiente Windows com Docker instalado no WSL, execute os testes dentro do WSL para que o Testcontainers acesse `/var/run/docker.sock`.
@@ -366,6 +376,7 @@ target/site/jacoco/index.html
 | `ACTIVE_PROFILE` | `dev` | Profile padrao. |
 | `SERVER_PORT` | `8080` | Porta HTTP. |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:5173` | Origens permitidas no CORS. |
+| `SPRING_DOCKER_COMPOSE_ENABLED` | `true` | Habilita o suporte do Spring Boot ao Docker Compose. No profile `test`, o projeto define `false`. |
 
 ### Banco
 
