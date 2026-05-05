@@ -26,12 +26,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @ActiveProfiles("test")
 abstract class BaseIntegrationTest {
 
-    @Container
-    static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16-alpine")
-            .withDatabaseName("portfolio_test")
-            .withUsername("test")
-            .withPassword("test");
-
     @Autowired
     MockMvc mockMvc;
 
@@ -48,6 +42,12 @@ abstract class BaseIntegrationTest {
     JdbcTemplate jdbcTemplate;
 
     final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Container
+    static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withDatabaseName("portfolio_test")
+            .withUsername("test")
+            .withPassword("test");
 
     @DynamicPropertySource
     static void configureDatasource(DynamicPropertyRegistry registry) {
