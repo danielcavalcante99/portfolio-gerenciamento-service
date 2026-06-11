@@ -51,7 +51,7 @@ public class ProjetoController {
                 {
                   "nome": "Atualização ERP",
                   "dataInicio": "2026-05-01",
-                  "dataFimPrevista": "2026-09-01",
+                  "dataPrevistaFim": "2026-09-01",
                   "dataFimReal": null,
                   "orcamentoTotal": 250000.00,
                   "descricao": "Modernização do módulo financeiro do ERP.",
