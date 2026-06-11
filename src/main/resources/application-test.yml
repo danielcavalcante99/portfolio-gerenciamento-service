@@ -20,8 +20,8 @@ spring:
       maximum-pool-size: 5
       minimum-idle: 1
       connection-timeout: 5000
-      idle-timeout: 30000
-      max-lifetime: 600000
+      idle-timeout: 60000
+      max-lifetime: 900000
       leak-detection-threshold: 30000
 
   devtools:
